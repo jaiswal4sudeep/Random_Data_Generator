@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -20,7 +19,9 @@ class _HomePageState extends State<HomePage> {
   Future<void> getData() async {
     Response response = await get(Uri.parse("https://randomuser.me/api/"));
     if (response.statusCode == 200) {
-      isLoading = false;
+      setState(() {
+        isLoading = false;
+      });
     }
     Map data = jsonDecode(response.body);
     name = data["results"][0]["name"]["title"] +
@@ -76,7 +77,13 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           child: isLoading
-              ? const CircularProgressIndicator()
+              ? Stack(
+                  children: const [
+                    Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ],
+                )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -134,9 +141,12 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: const Color(0xFFe0e0e0),
         foregroundColor: Colors.black,
         onPressed: () {
-          setState(() {
-            getData();
-          });
+          setState(
+            () {
+              isLoading = true;
+              getData();
+            },
+          );
         },
         child: const Icon(
           Icons.refresh,
