@@ -11,10 +11,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isLoading = true;
-  late String name;
-  late String email;
-  late String phone;
-  late String avatar;
+  String name = "";
+  String email = "";
+  String phone = "";
+  String avatar = "";
 
   Future<void> getData() async {
     Response response = await get(Uri.parse("https://randomuser.me/api/"));
